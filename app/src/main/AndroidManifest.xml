@@ -10,10 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizMe">
         <activity
-            android:name=".QuestionActivity"
+            android:name=".ResultActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"/>
+        <activity
+            android:name=".QuestionActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

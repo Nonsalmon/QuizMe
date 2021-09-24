@@ -1,6 +1,9 @@
 package com.example.quizme
 
 object Constants{
+    const val USER_NAME:String ="Username"
+    const val TOTAL_QUESTION: String="total_question"
+    const val CORRECT_ANSWERS:String="correct_answers"
 
     fun getQuestions(): ArrayList<Question> {
         val questionsList = ArrayList<Question>()
@@ -13,7 +16,7 @@ object Constants{
             "Python",
             "Javascript",
             "C+",
-            "Java"
+            1
         )
 
         questionsList.add(que1)
@@ -27,7 +30,7 @@ object Constants{
             "Python",
             "Javascript",
             "C+",
-            "Python"
+            2
         )
         questionsList.add(que2)
         //3
@@ -39,7 +42,7 @@ object Constants{
             "C##",
             "Javascript",
             "Swift",
-            "Swift"
+            4
         )
         questionsList.add(que3)
         //4
@@ -51,7 +54,7 @@ object Constants{
             "Swift",
             "Javascript",
             "Ruby",
-            "Javascript"
+            3
         )
         questionsList.add(que4)
         //5
@@ -63,7 +66,7 @@ object Constants{
             "Ruby",
             "C#",
             "C+",
-            "C#"
+            3
         )
         questionsList.add(que5)
         //6
@@ -71,11 +74,11 @@ object Constants{
             6,
             "What programming language does this picture belong to?",
             R.drawable.c,
-            "C++",
+            "C#",
             "Python",
             "Swift",
-            "C+",
-            "C++"
+            "C++",
+            4
         )
         questionsList.add(que6)
         return questionsList

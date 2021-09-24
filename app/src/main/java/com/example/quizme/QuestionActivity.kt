@@ -1,5 +1,6 @@
 package com.example.quizme
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -14,11 +15,16 @@ class QuestionActivity : AppCompatActivity(),View.OnClickListener{
     private var mCurrentPosition:Int = 1
     private var mQuestionList: ArrayList<Question>? = null
     private var mSelectedOptionPosition :Int = 0
+    private var  mCorrectAnswers:Int=0
+    private var mUsername:String?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
+
+        mUsername = intent.getStringExtra(Constants.USER_NAME)
+
         mQuestionList = Constants.getQuestions()
 
         setQuestion()
@@ -26,13 +32,20 @@ class QuestionActivity : AppCompatActivity(),View.OnClickListener{
         tv_option_two.setOnClickListener(this)
         tv_option_three.setOnClickListener(this)
         tv_option_four.setOnClickListener(this)
+        btn_submit.setOnClickListener(this)
 
     }
     private fun setQuestion(){
-        mCurrentPosition = 1
+
         val question = mQuestionList!![mCurrentPosition-1]
 
         defaultOptionsView()
+
+        if(mCurrentPosition == mQuestionList!!.size){
+            btn_submit.text ="FINISH"
+        }else{
+            btn_submit.text="SUBMIT"
+        }
 
         progressBar.progress = mCurrentPosition
         tv_progress.text ="$mCurrentPosition"+"/"+progressBar.max
@@ -77,9 +90,66 @@ class QuestionActivity : AppCompatActivity(),View.OnClickListener{
             R.id.tv_option_four ->{
                 selectedOptionView(tv_option_four,4)
             }
+            R.id.btn_submit ->{
+                if(mSelectedOptionPosition ==0){
+                    mCurrentPosition++
+
+                    when{
+                        mCurrentPosition <= mQuestionList!!.size ->{
+                            setQuestion()
+                        }else ->{
+                            val intent = Intent(this,ResultActivity::class.java)
+                        intent.putExtra(Constants.USER_NAME,mUsername)
+                        intent.putExtra(Constants.CORRECT_ANSWERS,mCorrectAnswers)
+                        intent.putExtra(Constants.TOTAL_QUESTION,mQuestionList!!.size)
+                        startActivity(intent)
+                        }
+                    }
+                }else{
+                    val question = mQuestionList?.get(mCurrentPosition-1)
+                    if(question!!.correctAnswer != mSelectedOptionPosition){
+                        answerView(mSelectedOptionPosition,R.drawable.wrong_option_background)
+                    }else{
+                        mCorrectAnswers++
+                    }
+                    answerView(question.correctAnswer,R.drawable.correct_option_background)
+
+                    if (mCurrentPosition == mQuestionList!!.size){
+                        btn_submit.text ="FINISH"
+                    }else{
+                        btn_submit.text ="GO TO NEXT QUESTION"
+                    }
+                    mSelectedOptionPosition=0
+                }
+
+            }
         }
 
     }
+
+    private fun answerView(answer: Int, drawableView:Int){
+        when(answer){
+            1 -> {
+                tv_option_one.background = ContextCompat.getDrawable(
+                    this,drawableView
+                )
+            }
+            2 ->{
+                tv_option_two.background = ContextCompat.getDrawable(
+                    this,drawableView )
+            }
+            3 ->{
+                tv_option_three.background = ContextCompat.getDrawable(
+                    this,drawableView )
+            }
+            4 ->{
+                tv_option_four.background = ContextCompat.getDrawable(
+                    this,drawableView )
+            }
+
+        }
+    }
+
     private fun selectedOptionView(tv:TextView,selectedOptionNumber:Int){
         defaultOptionsView()
         mSelectedOptionPosition = selectedOptionNumber
